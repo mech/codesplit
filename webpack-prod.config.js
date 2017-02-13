@@ -7,7 +7,7 @@ const config = {
     extensions: ['.js', '.jsx', '.json', '.css']
   },
 
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   target: 'web',
   context: __dirname,
 
@@ -23,9 +23,8 @@ const config = {
   },
 
   output: {
-    filename: 'js/[name].js',
-    // filename: 'js/[name]-[chunkhash:8].js',
-    // chunkFilename: 'js/[name]-[chunkhash:8].js',
+    filename: 'js/[name]-[chunkhash:8].js',
+    chunkFilename: 'js/[name]-[chunkhash:8].js',
     path: path.join(__dirname, 'server/public'),
     publicPath: '/',
     pathinfo: true
@@ -52,19 +51,8 @@ const config = {
     ]
   },
 
-  devServer: {
-    host: '0.0.0.0',
-    // stats: 'minimal',
-    stats: {
-      chunks: false
-    },
-    hot: true,
-    historyApiFallback: true
-  },
-
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin({ multiStep: true }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor', 'manifest']
