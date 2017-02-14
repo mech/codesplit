@@ -16,8 +16,8 @@ class App extends Component {
       <Router>
         <div>
           <ul>
-            <li><Link to="/staff">Staff</Link></li>
-            <li><Link to="/employer">Employer</Link></li>
+            <li><Link to="/staff">Staffs</Link></li>
+            <li><Link to="/employer">Employers</Link></li>
           </ul>
 
           <Route path="/staff" component={(props) => <AsyncRoute props={props} loadingPromise={import("./staff/StaffScreen")} />} />

@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 
 const config = {
   resolve: {
@@ -15,11 +16,11 @@ const config = {
     app: [
       'babel-polyfill',
       './app/index.jsx'
-    ],
-    vendor: [
-      'react',
-      'react-dom'
     ]
+    // vendor: [
+    //   'react',
+    //   'react-dom'
+    // ]
   },
 
   output: {
@@ -27,7 +28,7 @@ const config = {
     chunkFilename: 'js/[name]-[chunkhash:8].js',
     path: path.join(__dirname, 'server/public'),
     publicPath: '/',
-    pathinfo: true
+    pathinfo: false // Don't need comment for production mode
   },
 
   module: {
@@ -52,21 +53,50 @@ const config = {
   },
 
   plugins: [
-    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production') // Dead-code elimination
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        screw_ie8: true, // React doesn't support IE8
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true
+      },
+      mangle: {
+        screw_ie8: true
+      },
+      output: {
+        screw_ie8: true,
+        comments: false
+      }
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendor', 'manifest']
-      // minChunks: function(module) {
-      //   return module.context && module.context.indexOf('node_modules') !== -1
-      // }
+      name: 'vendor',
+      minChunks: function(module) {
+        return module.context && module.context.indexOf('node_modules') !== -1
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity // Ensure no other module goes into the chunk (??)
     }),
     new HtmlWebpackPlugin({
-      template: './server/template/index.html'
-    })
+      template: './server/template/index.ejs',
+      minify: {
+        collapseWhitespace: true,
+        preserveLineBreaks: true
+      }
+    }),
+    new InlineManifestWebpackPlugin()
   ],
 
-  // recordsPath: path.resolve(__dirname, './recordsPath.json')
-  recordsPath: `${process.cwd()}/.webpack-records/records.json`
+  // Required in order for vendor chunkhash to stay consistent
+  recordsPath: path.join(__dirname, '.webpack-records/recordsPath.json')
+  // recordsPath: `${process.cwd()}/.webpack-records/records.json`
 }
 
 module.exports = config

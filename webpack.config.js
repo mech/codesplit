@@ -23,12 +23,10 @@ const config = {
   },
 
   output: {
-    filename: 'js/[name].js',
-    // filename: 'js/[name]-[chunkhash:8].js',
-    // chunkFilename: 'js/[name]-[chunkhash:8].js',
+    filename: 'js/[name].js', // Don't use [hash] or [chunkhash] in dev mode
     path: path.join(__dirname, 'server/public'),
     publicPath: '/',
-    pathinfo: true
+    pathinfo: true // Include module comment for dev use
   },
 
   module: {
