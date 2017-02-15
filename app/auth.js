@@ -1,6 +1,6 @@
 const auth = {
   login(email, password) {
-    fetch('http://192.168.1.10:3000/auth/token', {
+    return fetch(`${process.env.BASE_URL}/auth/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

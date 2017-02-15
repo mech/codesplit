@@ -14,7 +14,7 @@ const config = {
   entry: {
     app: [
       // 'babel-polyfill',
-      // 'webpack-dev-server/client?http://localhost:8080',
+      // 'webpack-dev-server/client?http://192.168.1.10:9000',
       // 'webpack/hot/only-dev-server',
       './app/index.jsx'
     ]
@@ -60,8 +60,7 @@ const config = {
       chunks: false
     },
     hot: true,
-    historyApiFallback: true,
-    publicPath: '/'
+    historyApiFallback: true
   },
 
   plugins: [
@@ -70,6 +69,13 @@ const config = {
     // Removing { multiStep: true } seems to fix "webpackHotUpdate is not defined"
     // https://github.com/webpack/webpack/issues/2985
     new webpack.HotModuleReplacementPlugin(),
+
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        BASE_URL: JSON.stringify(`http://${process.env.DEVELOPMENT_IP}:3000`)
+      }
+    }),
 
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import auth from './auth'
+import { connect } from 'react-redux'
 
 class Login extends Component {
   constructor(props) {
@@ -12,10 +13,13 @@ class Login extends Component {
 
   submit(e) {
     e.preventDefault()
-    auth.login('mech@me.com', 'password')
+    auth.login('mech@me.com', 'password').then(data => {
+      this.props.dispatch({type: 'auth/authenticated'})
+    })
   }
 
   render() {
+    console.log(this.props);
     return (
       <form onSubmit={this.submit}>
         <input type="email" placeholder="Email" />
@@ -26,10 +30,4 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-}
-
-Login.defaultProps = {
-}
-
-export default Login
+export default connect()(Login)
