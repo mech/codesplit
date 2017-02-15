@@ -6,9 +6,11 @@ import {
 } from 'react-router-dom'
 
 import EmployerScreen from './employer/EmployerScreen'
+import Login from './Login'
 
 // For code splitting
 import AsyncRoute from './AsyncRoute'
+import AuthRoute from './AuthRoute'
 
 class App extends Component {
   render() {
@@ -16,12 +18,13 @@ class App extends Component {
       <Router>
         <div>
           <ul>
-            <li><Link to="/staff">Staffs</Link></li>
-            <li><Link to="/employer">Employers</Link></li>
+            <li><Link to="/staff">Staff</Link></li>
+            <li><Link to="/employer">Employer</Link></li>
           </ul>
 
-          <Route path="/staff" component={(props) => <AsyncRoute props={props} loadingPromise={import("./staff/StaffScreen")} />} />
-          <Route path="/employer" component={EmployerScreen} />
+          <Route exact path="/login" component={Login} />
+          <AuthRoute path="/staff" component={(props) => <AsyncRoute props={props} loadingPromise={import("./staff/StaffScreen")} />} />
+          <AuthRoute path="/employer" component={EmployerScreen} />
         </div>
       </Router>
     )

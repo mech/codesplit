@@ -14,12 +14,14 @@ const config = {
   entry: {
     app: [
       // 'babel-polyfill',
+      // 'webpack-dev-server/client?http://localhost:8080',
+      // 'webpack/hot/only-dev-server',
       './app/index.jsx'
-    ],
-    vendor: [
-      'react',
-      'react-dom'
     ]
+    // vendor: [
+    //   'react',
+    //   'react-dom'
+    // ]
   },
 
   output: {
@@ -52,31 +54,34 @@ const config = {
 
   devServer: {
     host: '0.0.0.0',
+    port: 9000,
     // stats: 'minimal',
     stats: {
       chunks: false
     },
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    publicPath: '/'
   },
 
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin({ multiStep: true }),
+
+    // Removing { multiStep: true } seems to fix "webpackHotUpdate is not defined"
+    // https://github.com/webpack/webpack/issues/2985
+    new webpack.HotModuleReplacementPlugin(),
+
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendor', 'manifest']
-      // minChunks: function(module) {
-      //   return module.context && module.context.indexOf('node_modules') !== -1
-      // }
+      name: 'vendor',
+      minChunks: function(module) {
+        return module.context && module.context.indexOf('node_modules') !== -1
+      }
     }),
     new HtmlWebpackPlugin({
-      template: './server/template/index.html'
+      template: './server/template/index.ejs'
     })
-  ],
-
-  // recordsPath: path.resolve(__dirname, './recordsPath.json')
-  recordsPath: `${process.cwd()}/.webpack-records/records.json`
+  ]
 }
 
 module.exports = config
