@@ -14,7 +14,7 @@ const config = {
   entry: {
     app: [
       // 'babel-polyfill',
-      // 'webpack-dev-server/client?http://192.168.1.10:9000',
+      // 'webpack-dev-server/client?http://localhost:9000',
       // 'webpack/hot/only-dev-server',
       './app/index.jsx'
     ]
