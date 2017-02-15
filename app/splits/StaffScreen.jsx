@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import SecretForStaff from '../staff/SecretForStaff'
 
 class StaffScreen extends Component {
   render() {
     return (
-      <h1>Staff Screen 👁</h1>
+      <div>
+        <h1>Staff Screen 👁</h1>
+        <SecretForStaff />
+      </div>
     )
   }
 }

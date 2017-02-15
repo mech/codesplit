@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import auth from './auth'
 import { connect } from 'react-redux'
+import shuffle from 'lodash/shuffle'
 
 class Login extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Login extends Component {
   submit(e) {
     e.preventDefault()
     auth.login('mech@me.com', 'password').then(data => {
-      this.props.dispatch({type: 'auth/authenticated'})
+      this.props.dispatch({type: 'auth/authenticated', payload: shuffle(['EmployerScreen', 'StaffScreen'])[0]})
     })
   }
 

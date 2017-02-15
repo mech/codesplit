@@ -4,8 +4,8 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import EmployerScreen from './employer/EmployerScreen'
 import Login from './Login'
 
 // For code splitting
@@ -14,21 +14,20 @@ import AuthRoute from './AuthRoute'
 
 class App extends Component {
   render() {
+    console.log(this.props);
     return (
       <Router>
         <div>
           <ul>
-            <li><Link to="/staff">Staff</Link></li>
-            <li><Link to="/employer">Employer</Link></li>
+            <li><Link to="/dashboard">Dashboard</Link></li>
           </ul>
 
           <Route exact path="/login" component={Login} />
-          <AuthRoute path="/staff" component={(props) => <AsyncRoute props={props} loadingPromise={import("./staff/StaffScreen")} />} />
-          <AuthRoute path="/employer" component={EmployerScreen} />
+          <AuthRoute path="/dashboard" component={(props) => <AsyncRoute props={props} loadingPromise={import("./splits/" + this.props.role)} />} />
         </div>
       </Router>
     )
   }
 }
 
-export default App
+export default connect(state => state.auth)(App)

@@ -5,10 +5,10 @@ import App from './App'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 
-const auth = (state = { isAuthenticated: false }, { type }) => {
+const auth = (state = { isAuthenticated: false, role: 'EmployerScreen' }, { type, payload }) => {
   switch (type) {
     case 'auth/authenticated':
-      return { ...state, isAuthenticated: true }
+      return { ...state, isAuthenticated: true, role: payload }
     default:
       return state
   }
@@ -45,7 +45,9 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer)
 
 render(
-  <Provider store={store}><App /></Provider>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('app')
 )
 
@@ -53,7 +55,9 @@ render(
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./App', () => {
     render(
-      <Provider store={store}><App /></Provider>,
+      <Provider store={store}>
+        <App />
+      </Provider>,
       document.getElementById('app')
     )
   })
