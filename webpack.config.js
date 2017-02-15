@@ -13,7 +13,7 @@ const config = {
 
   entry: {
     app: [
-      'babel-polyfill',
+      // 'babel-polyfill',
       './app/index.jsx'
     ],
     vendor: [

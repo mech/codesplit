@@ -11,10 +11,11 @@ const config = {
   devtool: 'cheap-module-source-map',
   target: 'web',
   context: __dirname,
+  bail: true, // Abort immediately
 
   entry: {
     app: [
-      'babel-polyfill',
+      // 'babel-polyfill',
       './app/index.jsx'
     ]
     // vendor: [
@@ -53,6 +54,15 @@ const config = {
   },
 
   plugins: [
+    // Make deterministic build by using names instead of module id
+    // but can be a security risk as it reveal paths
+    new webpack.NamedModulesPlugin(),
+
+    // New for Webpack 2
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production') // Dead-code elimination
@@ -69,8 +79,8 @@ const config = {
         screw_ie8: true
       },
       output: {
-        screw_ie8: true,
-        comments: false
+        comments: false,
+        screw_ie8: true
       }
     }),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -87,8 +97,17 @@ const config = {
     new HtmlWebpackPlugin({
       template: './server/template/index.ejs',
       minify: {
+        removeComments: true,
         collapseWhitespace: true,
-        preserveLineBreaks: true
+        preserveLineBreaks: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
       }
     }),
     new InlineManifestWebpackPlugin()
