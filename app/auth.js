@@ -10,7 +10,16 @@ const auth = {
   },
 
   isAuthenticated() {
-    return true
+    // Or we can just check for JWT expiry time
+    return tokenNotExpired()
+  },
+
+  getToken() {
+    localStorage.getItem('token')
+  },
+
+  getUserRole() {
+    return jwtDecode(this.getToken()).scope
   }
 }
 

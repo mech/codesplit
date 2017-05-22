@@ -13,6 +13,10 @@ const config = {
   context: __dirname,
   bail: true, // Abort immediately
 
+  performance: {
+    hints: 'error' // It is an error if you have performance issues
+  },
+
   entry: {
     app: [
       // 'babel-polyfill',

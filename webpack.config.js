@@ -44,10 +44,20 @@ const config = {
 
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            localIdentName: '[name]-[local]-[hash:base64:6]',
+            camelCase: true
+          }
+        }]
+        // use: [
+        //   'style-loader',
+        //   'css-loader?modules,localIdentName=[hash:base64:4]-[name]-[local]'
+        // ]
       }
     ]
   },
